@@ -1,2 +1,2 @@
-# testiting_prpject
+# testing_project
 Making testing web app 
