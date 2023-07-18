@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block title %} Author {% endblock %}
+
+{% block contend %}
+{%for result in results.values%}
+    <div class="row">
+        <h5> <b>Test name:</b>{{result.test_name}}</h5>
+        <h5><b>Status:</b>  {%if result.error%} Error => FAILED
+            {{result.error}}
+            {%else%}
+            PASSED
+        </h5>
+    </div>
+
+    {%endif%}
+{%endfor%}
+{% endblock %}
