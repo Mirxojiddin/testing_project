@@ -112,7 +112,7 @@ class TestingSampleView(View):
         }
         # data = [i for i in results.values()]
         # results = json.dumps(data)
-        print(results)
+        # print(results)
 
         return render(request, 'testing/testing_sample.html', context)
 

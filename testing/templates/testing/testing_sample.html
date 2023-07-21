@@ -7,10 +7,10 @@
 {%for result in results.values%}
     <div class="row">
         <h5> <b>Test name:</b>{{result.test_name}}</h5>
-        <h5><b>Status:</b>  {%if result.error%} Error => FAILED
-            {{result.error}}
+        <h5><b>Status:</b>  {%if result.error%} <i class="text-danger">FAILED</i>
+            <u>Error => {{result.error}}</u>
             {%else%}
-            PASSED
+            <i class="text-success"> PASSED </i>
         </h5>
     </div>
 
