@@ -28,16 +28,12 @@ class UnitTestes(models.Model):
 	description = models.CharField(max_length=255, null=True, blank=True)
 	url = models.CharField(max_length=150)
 	method = models.CharField(max_length=20, choices=METHOD_CHOICE)
-	key_name = models.CharField(max_length=30, null=True, blank=True)
-	key_name1 = models.CharField(max_length=30, null=True, blank=True)
-	key_name2 = models.CharField(max_length=30, null=True, blank=True)
-	param1 = models.CharField(max_length=30, null=True, blank=True )
-	param2 = models.CharField(max_length=30, null=True, blank=True)
-	param3 = models.CharField(max_length=30, null=True, blank=True)
-	json = models.TextField(null=True,  blank=True)
+	param = models.JSONField(null=True, blank=True)
+	json = models.JSONField(null=True,  blank=True)
 	status_code = models.IntegerField(default=0, null=True, blank=True)
 	is_list = models.BooleanField(default=False)
 	is_contains = models.CharField(max_length=100, null=True, blank=True)
+	key = models.JSONField(null=True, blank=True)
 
 
 	def __str__(self):
