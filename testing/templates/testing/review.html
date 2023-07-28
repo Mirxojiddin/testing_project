@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %} Test review {% endblock %}
+
+
+{% block contend %}
+<h5> <b>Test name:</b>{{test.name}}</h5>
+{%if test.description%}
+<h5> <b>Umumiy tasnif:</b>{{test.description}}</h5>
+{%endif%}
+
+{%if test.json%}
+<h5> <b>Json:</b>{{test.json}}</h5>
+{%endif%}
+{%if test.status_code%}
+        <div class="row">
+            <h5>
+                <b>Test {{test.status_code}}  status code kutadi</b>
+            </h5>
+        </div>
+{%endif%}
+{%if test.is_list%}
+        <div class="row">
+            <h5>
+                <b>Test Natijani list xolatdaligini tekshiradi</b>
+            </h5>
+        </div>
+{%endif%}
+
+{%if test.key_name%}
+        <div class="row">
+            <h5>
+                <b>Test Natijaning ichida {{test.key_name}} kalit so'zi borligini tekshiradi</b>
+            </h5>
+        </div>
+{%endif%}
+
+{%if test.is_contains%}
+        <div class="row">
+            <h5>
+                <b>Test Natijaning ichida {{test.is_contains}} borligini tekshiradi</b>
+            </h5>
+        </div>
+{%endif%}
+{% endblock %}

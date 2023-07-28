@@ -178,3 +178,7 @@ class TestRunnerView(LoginRequiredMixin, View):
         return render(request, 'testing/run_test.html', context)
 
 
+class TestReview(View):
+    def get(self, request, test):
+        test = UnitTestes.objects.get(name=test)
+        return render(request, 'testing/review.html', {'test': test})
