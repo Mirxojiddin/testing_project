@@ -1,13 +1,11 @@
-import json
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-import requests
-
 import inspect
 
 import requests
 from django.views import View
+
+from testing.models import UnitTestes, Testes
 
 API_URL = "http://127.0.0.1:8000/api/rooms"
 
@@ -117,7 +115,66 @@ class TestingSampleView(View):
         return render(request, 'testing/testing_sample.html', context)
 
 
+class TestRunnerView(LoginRequiredMixin, View):
+    def get(self, request, id):
+        testes = Testes.objects.get(pk=id)
+        return render(request, 'testing/run_test.html', {"testes": testes})
 
-
+    def post(self, request, id):
+        base_url = request.POST.get('base_url')
+        results = {}
+        counter = 0
+        tests = UnitTestes.objects.filter(test_id=id).order_by('id')
+        for test in tests:
+            test_url = test.url
+            if test.param:
+                for key, val in test.param.items():
+                    test_url = test_url.replace("{" + key + "}", str(val))
+            test_name = test.name
+            test_method = test.method
+            try:
+                if test_method == 'get':
+                    response = requests.get(f"{base_url}{test_url}")
+                elif test_method == 'post':
+                    response = requests.post(f"{base_url}{test_url}", json=test.json)
+            except ConnectionError as e:
+                return render(request, 'testing/run_test.html', {"error": "serverga ulanishga xatolik"})
+            if test.status_code > 0:
+                if response.status_code != test.status_code:
+                    results[counter] = {
+                        'test_name': test_name,
+                        'url': f"{base_url}{test_url}",
+                        "error": f"statsu code not {test.status_code}"
+                    }
+                    counter += 1
+                    continue
+            if test.is_list:
+                data = response.json()
+                if not isinstance(data, list):
+                    results[counter] = {
+                        'test_name': test_name,
+                        "error": "data is not  a list"
+                    }
+                    counter += 1
+                    continue
+            if test.key:
+                for key in test.key:
+                    data = response.json()
+                    if key not in data:
+                        results[counter] = {
+                            'test_name': test_name,
+                            "error": f"not exist {key} in data"
+                        }
+                        counter += 1
+                        continue
+            results[counter] = {
+                'test_name': test_name,
+                "message": "Ok"
+            }
+            counter += 1
+        context = {
+            'results': results
+        }
+        return render(request, 'testing/run_test.html', context)
 
 
