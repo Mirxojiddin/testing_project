@@ -32,9 +32,9 @@ class UnitTestes(models.Model):
 	json = models.JSONField(null=True,  blank=True)
 	status_code = models.IntegerField(default=0, null=True, blank=True)
 	is_list = models.BooleanField(default=False)
-	is_contains = models.CharField(max_length=100, null=True, blank=True)
+#	is_contains = models.CharField(max_length=100, null=True, blank=True)
+	is_contain = models.JSONField(null=True,  blank=True)
 	key = models.JSONField(null=True, blank=True)
-
 
 	def __str__(self):
 		return f"{self.name} {self.test.name}"

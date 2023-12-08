@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %} Test review {% endblock %}
+
+
+{% block contend %}
+<style>
+            table,
+            th,
+            td {
+                border-collapse: collapse;
+            }
+
+
+            td:nth-child(1) {
+                width: 30%;
+                color:red;
+                font-weight: bold;
+                font-size: 20px;
+
+            }
+
+            td:nth-child(2) {
+                font-size: 20px;
+                font-weight: 600;
+                width: 70%;
+            }
+
+</style>
+
+{%for test in tests%}
+<div class="row border border-3 border-info p-3 m-4">
+    <table>
+        <tr>
+            <td>
+                Test name:
+            </td>
+            <td>
+                {{test.name}}
+            </td>
+        </tr>
+        <tr>
+            <td>Test url:</td>
+            <td>{{test.url}}</td>
+        </tr>
+        {%if test.description%}
+        <tr>
+            <td>
+                Testning umumiy tasnifi:
+            </td>
+            <td>
+                {{test.description}}
+            </td>
+        </tr>
+
+        {%endif%}
+        <tr>
+            <td>So'rov turi:</td>
+            <td>{{test.method}}</td>
+        </tr>
+        {%if test.param%}
+        <tr>
+            <td>Kerakli parametrlar:</td>
+            <td>{{test.param}}</td>
+        </tr>
+        {%endif%}
+        {%if test.json%}
+        <tr>
+            <td>
+                Kerakli jsonlar:
+            </td>
+            <td>
+                {{test.json}}
+            </td>
+        </tr>
+        {%endif%}
+
+        {%if test.status_code%}
+        <tr>
+            <td>
+                Status code:
+            </td>
+            <td>
+                Test {{test.status_code}} status code kutadi
+            </td>
+        </tr>
+        {%endif%}
+        {%if test.is_list%}
+
+        <tr>
+            <td>
+                <b>List :</b>
+            </td>
+            <td>
+                Test Natijani list xolatdaligini tekshiradi
+            </td>
+        </tr>
+        {%endif%}
+        {%if test.key_name%}
+        <tr>
+            <td>
+                Key:
+            </td>
+            <td>
+                Listni ichidagi {{test.key_name}} keylar
+            </td>
+        </tr>
+        {%endif%}
+        {%if test.is_contain%}
+        <tr>
+            <td>
+                Kalit so'zlar:
+            </td>
+            <td>
+                Natijadan kutilyatgan so'zlar
+                {% for key, value in test.is_contain.items %}
+                {{ forloop.counter }} <u><i>{{ value }}</i></u>
+                {% endfor %}
+            </td>
+        </tr>
+        {%endif%}
+
+    </table>
+</div>
+{%endfor%}
+
+{% endblock %}
