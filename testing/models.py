@@ -40,4 +40,18 @@ class UnitTestes(models.Model):
 		return f"{self.name} {self.test.name}"
 
 
+class Problem(models.Model):
+	name = models.CharField(max_length=100)
+	description = models.CharField(max_length=255)
 
+	def __str__(self):
+		return self.name
+
+
+class ProblemInput(models.Model):
+	problem = models.ForeignKey(Problem, on_delete= models.CASCADE)
+	input = models.CharField(max_length=100, null=True, blank=True)
+	answer = models.CharField(max_length=100)
+
+	def __str__(self):
+		return f"{self.problem.name} ning input qismi"

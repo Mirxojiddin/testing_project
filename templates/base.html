@@ -1,6 +1,6 @@
 {% load static %}
 {% url 'index' as home_page_url %}
-<!--{% url 'books:list' as books_page_url %}-->
+{% url 'testing:problem' as problem_page_url %}
 <!--{% url 'users:friends' as friends_page_url %}-->
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +26,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == problem_page_url %} active {%endif%}" aria-current="page" href="{{problem_page_url}}">Problem</a>
+          </li>
+        </ul>
+      </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link {% if request.path == home_page_url %} active {%endif%}" aria-current="page" href="{{home_page_url}}">Home</a>

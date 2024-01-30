@@ -5,8 +5,48 @@ import inspect
 import requests
 from django.views import View
 
-from testing.models import UnitTestes, Testes
+from testing.models import UnitTestes, Testes, Problem, ProblemInput
 API_URL = "http://127.0.0.1:8000/api/rooms"
+
+
+class ProblemView(View):
+    def get(self, request):
+        problems = Problem.objects.all()
+        return render(request, 'testing/problem.html', {'problems': problems})
+
+
+class ProblemDetailView(View):
+    def get(self, request, problem_id):
+        problem = Problem.objects.get(id=problem_id)
+        return render(request, 'testing/problem-detail.html', {'problem': problem})
+
+    def post (self, request, problem_id):
+        code = request.POST.get('comment')
+        problem_inputs = ProblemInput.objects.filter(problem_id = problem_id)
+        url = "https://online-code-compiler.p.rapidapi.com/v1/"
+        headers = {
+            "content-type": "application/json",
+            "X-RapidAPI-Key": "6b177d26b4msh108832346c8d435p185f17jsnabd819fc5be7",
+            "X-RapidAPI-Host": "online-code-compiler.p.rapidapi.com"
+        }
+        for problem_input in problem_inputs:
+            if problem_input.input is not None:
+                input = problem_input.input.replace("n" , '\n')
+            else:
+                input = ''
+            payload = {
+                "language": "python3",
+                "version": "latest",
+                "code": code,
+                "input": input
+            }
+            response = requests.post(url, json=payload, headers=headers)
+            print(response.json()['output'])
+            print(problem_input.answer)
+
+            if response.json()['output'].find(problem_input.answer) == -1:
+                return render(request, 'testing/problem-detail.html', {"message": "xato"})
+        return render(request, 'testing/problem-detail.html', {"message": "to'g'ri"})
 
 
 class TestView(View):
@@ -39,6 +79,7 @@ class TestRunnerView(LoginRequiredMixin, View):
                 return render(request, 'testing/run_test.html', {"error": "serverga ulanishga xatolik"})
         tests = UnitTestes.objects.filter(test_id=id).order_by('id')
         cookie = ''
+        string = ''
         for test in tests:
             test_url = test.url
             if test.param:
@@ -46,10 +87,8 @@ class TestRunnerView(LoginRequiredMixin, View):
                     test_url = test_url.replace("{" + key + "}", str(val))
             test_name = test.name
             test_method = test.method
-            payload = {'username': 'qw12', 'password': 'qw12'}
             session = requests.Session()
             session.post(base_url)
-
             try:
                 if test.name.find("Login") != -1 or test.name.find("login") != -1:
                     response = session.post(f"{base_url}{test_url}", data=test.json)
@@ -57,8 +96,10 @@ class TestRunnerView(LoginRequiredMixin, View):
                 if test_method == 'get':
                     response = session.get(f"{base_url}{test_url}", cookies=cookie)
                 elif test_method == 'post':
-                    response = session.post(f"{base_url}{test_url}", data=test.json, cookies=cookie)
-
+                    if id == 1:
+                        response = session.post(f"{base_url}{test_url}", json=test.json,  cookies=cookie)
+                    elif id == 2:
+                        response = session.post(f"{base_url}{test_url}", data=test.json, cookies=cookie)
             except ConnectionError as e:
                 return render(request, 'testing/run_test.html', {"error": "serverga ulanishga xatolik"})
             if test.status_code > 0:
@@ -91,8 +132,6 @@ class TestRunnerView(LoginRequiredMixin, View):
                         }
                         counter += 1
                         break
-            if check:
-                continue
             if test.is_contain:
                 check = False
                 data = response.text
