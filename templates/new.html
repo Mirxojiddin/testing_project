@@ -1,0 +1,13 @@
+
+{% extends "base.html" %}
+{% block contend %}
+{{ress}}
+
+     <form  method="post" action="{% url 'new'%}">
+        {%csrf_token%}
+        <label for="base_url" class="form-label requiredField">
+            Base_url<span class="asteriskField">*</span> </label>
+            <textarea rows="9" cols="70" name="comment"    id="base_url"></textarea>
+        <button type="submit" class="btn btn-primary mt-4">Testni boshlash</button>
+    </form>
+{% endblock %}
