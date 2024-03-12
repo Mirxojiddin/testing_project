@@ -94,7 +94,7 @@ class TestRunnerView(LoginRequiredMixin, View):
                     response = session.post(f"{base_url}{test_url}", data=test.json)
                     cookie = session.cookies
                 if test_method == 'get':
-                    response = session.get(f"{base_url}{test_url}", cookies=cookie)
+                    response = session.get(f"{base_url}{test_url}",     )
                 elif test_method == 'post':
                     if id == 1:
                         response = session.post(f"{base_url}{test_url}", json=test.json,  cookies=cookie)

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block contend %}
+    <div class="row">
+        <h3> <b>Masala nomi:</b> {{problem.name}}</h3>
+        <h5> <b>Tasnifi:</b>{{problem.description}}
+        </h5>
+    </div>
+{{message}}
+     <form  method="post">
+         <input type="hidden" name = "problem" value="{{problem.id}}">
+        {%csrf_token%}
+        <label for="base_url" class="form-label requiredField">
+            Code:<span class="asteriskField">*</span> </label>
+            <textarea rows="9" cols="70" name="comment"    id="base_url"></textarea><br>
+        <button type="submit" class="btn btn-primary mt-4">Javobni yuborish</button>
+    </form>
+{% endblock %}

@@ -27,6 +27,10 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
 
     'testing',
+    'problem_solving',
+    "test_backend",
+    "test_frontend",
+
     'users.apps.UsersConfig'
 ]
 LOGIN_URL = "users:login"

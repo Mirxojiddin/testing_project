@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Test review {% endblock %}
+
+
+{% block contend %}
+{%for problem in problems%}
+    <div class="row">
+        <h3> <b>Masala nomi:</b> <a href="{% url 'testing:problem-detail' problem.id %}" >{{problem.name}}</a></h3>
+        <h5> <b>Tasnifi:</b>{{problem.description}}
+        </h5>
+    </div>
+{%endfor%}
+
+{% endblock  %}
