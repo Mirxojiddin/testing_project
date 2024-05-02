@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from test_frontend.models import TestingFrontend
+
+admin.site.register(TestingFrontend)

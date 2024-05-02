@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} login {% endblock %}
+
+<style >
+    body {
+        color: blue;
+      }
+
+</style>
+{% block contend %}
+{%if results%}
+{%for result in results.values%}
+    <div class="row">
+        <h5> <b>Test name:</b>{{result.test_name}}</h5>
+        <h5><b>Status:</b>  {%if result.error%} <i class="text-danger">FAILED</i>
+            <br>
+                URL=><i>{{result.url}}</i><a href ='{{result.url}}' target="_blank" > =>>Sahifa</a><br>
+            <u>Error => {{result.error}}</u>
+            <a href="{% url 'testing:review' result.test_name%}">Batafsil</a>
+            {%else%}
+            <i class="text-success"> PASSED </i>
+        </h5>
+    </div>
+
+    {%endif%}
+{% endfor %}
+{%elif error%}
+<h1>{{error}}</h1>
+{%else%}
+<div class="row ml-2">
+    <div class="col-4">
+        {%if base_url%}
+        {{base_url}}
+        {%endif%}
+        <form  method="post">
+            {%csrf_token%}
+            <label for="base_url" class="form-label requiredField">
+                Base_url<span class="asteriskField">*</span> </label>
+            <input type="text" name="base_url" autofocus="" autocapitalize="none" autocomplete="base_url" maxlength="150"
+                   class="textinput form-control" required="" id="base_url">
+            <button type="submit" class="btn btn-primary mt-4">Testni boshlash</button>
+        </form>
+    </div>
+</div>
+{%endif%}
+{% endblock %}

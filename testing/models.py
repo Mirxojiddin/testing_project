@@ -2,6 +2,8 @@ from django.db import models
 
 POST, GET = "post", 'get'
 
+BACK, FRONT = "back", 'front'
+
 
 class Course(models.Model):
 	name = models.CharField(max_length=50)
@@ -11,8 +13,13 @@ class Course(models.Model):
 
 
 class Testes(models.Model):
+	TYPE_CHOICE = (
+		(BACK, BACK),
+		(FRONT, FRONT),
+	)
 	name = models.CharField(max_length=50)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	test_type = models.CharField(choices=TYPE_CHOICE, default=BACK)
 
 	def __str__(self):
 		return f"{self.name} {self.course.name}"

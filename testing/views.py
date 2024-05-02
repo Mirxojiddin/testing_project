@@ -80,26 +80,25 @@ class TestRunnerView(LoginRequiredMixin, View):
         tests = UnitTestes.objects.filter(test_id=id).order_by('id')
         cookie = ''
         string = ''
+        session = requests.Session()
         for test in tests:
             test_url = test.url
+            params = {}
             if test.param:
-                for key, val in test.param.items():
-                    test_url = test_url.replace("{" + key + "}", str(val))
+                params = test.param
             test_name = test.name
             test_method = test.method
-            session = requests.Session()
-            session.post(base_url)
+
             try:
                 if test.name.find("Login") != -1 or test.name.find("login") != -1:
-                    response = session.post(f"{base_url}{test_url}", data=test.json)
-                    cookie = session.cookies
+                    response = session.post(f"{base_url}{test_url}", data=test.json, params=params)
                 if test_method == 'get':
-                    response = session.get(f"{base_url}{test_url}",     )
+                    response = session.get(f"{base_url}{test_url}", params=params )
                 elif test_method == 'post':
                     if id == 1:
-                        response = session.post(f"{base_url}{test_url}", json=test.json,  cookies=cookie)
+                        response = session.post(f"{base_url}{test_url}", json=test.json,   params=params)
                     elif id == 2:
-                        response = session.post(f"{base_url}{test_url}", data=test.json, cookies=cookie)
+                        response = session.post(f"{base_url}{test_url}", data=test.json,  params=params)
             except ConnectionError as e:
                 return render(request, 'testing/run_test.html', {"error": "serverga ulanishga xatolik"})
             if test.status_code > 0:

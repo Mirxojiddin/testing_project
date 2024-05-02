@@ -17,7 +17,11 @@
         <div class="row">
             {%for test in tests%}
             <div class="col">
+                {% if  test.test_type in 'back, BACK' %}                
                 <a href="{% url 'testing:test-runner' test.id%}"><h3>{{test.name}} kursi</h3></a>
+                {%else%}
+                <a href="{% url 'test_frontend:test' test.id%}"><h3>{{test.name}} kursi</h3></a>
+                {%endif%}
             </div>
             {% endfor %}
         </div>
