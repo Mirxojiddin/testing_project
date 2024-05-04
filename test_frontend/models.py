@@ -21,6 +21,9 @@ class TestingFrontend(models.Model):
 	paired_tag = models.JSONField(null=True, blank=True)
 	single_tag = models.JSONField(null=True, blank=True)
 	is_contain = models.JSONField(null=True, blank=True)
+	attrs = models.JSONField(null=True, blank=True)
+	href = models.JSONField(null=True, blank=True)
+	tag_class = models.JSONField(null=True, blank=True)
 
 	def __str__(self):
 		return f"{self.test.name} {self.name}"
